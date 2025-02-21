@@ -53,7 +53,8 @@ router.post('/', auth, async (req, res) => {
   try {
     const resume = new Resume({
       ...req.body,
-      user: req.user.userId
+      user: req.user.userId,
+      lastUpdated: new Date()
     });
 
     await resume.save();

@@ -66,7 +66,6 @@ app.use((err, req, res, next) => {
     error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
   });
 });
-
 const PORT = process.env.PORT || 4000;
 
 const server = app.listen(PORT, () => {
@@ -83,3 +82,4 @@ process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
   process.exit(1);
 });
+

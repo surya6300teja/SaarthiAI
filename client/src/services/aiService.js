@@ -4,19 +4,19 @@ const generatePrompts = {
   'basics.summary': (context = {}) => `
     Generate a professional summary${context.title ? ` for a ${context.title} position` : ''}.
     Include key professional qualities and core competencies.
-    Keep it concise and impactful, around 3-4 sentences.
+    Keep it concise and impactful, around 25-30 words.
     Focus on career highlights and value proposition.
   `,
 
   'experience.description': (context = {}) => `
-    Generate a detailed but concise description${context.position ? ` for the role of ${context.position}` : ''}${context.company ? ` at ${context.company}` : ''}.
+    Generate a 25 words detailed but concise description${context.position ? ` for the role of ${context.position}` : ''}${context.company ? ` at ${context.company}` : ''}.
     Focus on:
     - Key responsibilities
     - Achievements and impact
     - Technologies or skills used
     - Quantifiable results where possible
-    Use bullet points and action verbs.
-    Keep it to 3-4 bullet points.
+    Use points and action verbs.
+    
   `,
 
   'education.description': (context = {}) => `
@@ -39,23 +39,18 @@ const generatePrompts = {
   `,
 
   'projects.description': (context = {}) => `
-    Generate a project description${context.name ? ` for ${context.name}` : ''}.
-    Include:
-    - Project purpose and goals
-    - Technologies used
-    - Your role and contributions
-    - Key achievements or outcomes
-    Keep it concise and impactful.
+    Generate a 25 words detailed but concise 20 words description${context.title ? ` for ${context.title}` : ''}${context.technologies ? ` using ${context.technologies}` : ''}.
   `,
 
   'achievements.description': (context = {}) => `
-    Generate an achievement description${context.title ? ` for ${context.title}` : ''}${context.organization ? ` at ${context.organization}` : ''}.
+    Generate an achievement description${context.title ? ` at ${context.organization}` : ''}.
     Focus on:
     - Specific accomplishment
     - Impact and results
     - Metrics where applicable
     - Recognition received
     Keep it concise and results-focused.
+    do not include any other text. or blank
   `
 };
 

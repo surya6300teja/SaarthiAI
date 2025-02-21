@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ResumeForm from './ResumeForm';
 import ResumePreview from './ResumePreview';
 import { aiService } from '../../services/aiService';
-import { SparklesIcon, DocumentIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, DocumentIcon, ArrowPathIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import api from '../../services/api';
+import { toast } from 'react-hot-toast';
 
 const ResumeBuilder = () => {
+  const navigate = useNavigate();
   const [resumeData, setResumeData] = useState({
     basics: {
       name: '',
@@ -23,6 +27,8 @@ const ResumeBuilder = () => {
 
   const [selectedTemplate, setSelectedTemplate] = useState('modern');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
 
   const handleInputChange = (section, value, index = null) => {
     setResumeData(prev => {
@@ -124,23 +130,33 @@ const ResumeBuilder = () => {
         case 'projects':
           if (context.type === 'description') {
             const project = resumeData.projects[context.index];
-            const result = await aiService.generateBulletPoints(
-              project.description,
-              resumeData.basics.title
+            const result = await aiService.generateContent({
+                field: 'projects.description',
+              context: {
+                title: project.title || '',
+                technologies: project.technologies || '',
+                description: project.description || ''
+              },
+              currentValue: project.description || ''
+            }
+              
             );
-            handleInputChange('projects', { description: result.join('\n') }, context.index);
+            handleInputChange('projects', { description: result.content }, context.index);
           }
           break;
 
         case 'achievements':
           if (context.type === 'description') {
             const achievement = resumeData.achievements[context.index];
-            const result = await aiService.generateAchievements({
-              position: resumeData.basics.title,
-              company: achievement.organization,
-              description: achievement.description
+            const result = await aiService.generateContent({
+              field: 'achievements.description',
+              context: {
+                title: achievement.title || '',
+                organisation: achievement.organisation || ''
+              },
+              currentValue: achievement.description || ''
             });
-            handleInputChange('achievements', { description: result[0] }, context.index);
+            handleInputChange('achievements', { description: result.content }, context.index);
           }
           break;
 
@@ -174,45 +190,80 @@ const ResumeBuilder = () => {
     }
   };
 
+  const handleFinish = async () => {
+    setIsSaving(true);
+    setSaveError('');
+    
+    try {
+      const response = await api.post('/api/v1/resumes', {
+        ...resumeData,
+        lastUpdated: new Date().toISOString()
+      });
+
+      if (response.data.success) {
+        // Show success message
+        toast.success('Resume saved successfully!');
+        // Redirect to dashboard or resume list
+        navigate('/dashboard');
+      } else {
+        throw new Error(response.data.error || 'Failed to save resume');
+      }
+    } catch (error) {
+      console.error('Error saving resume:', error);
+      setSaveError(error.message || 'Failed to save resume');
+      toast.error('Failed to save resume. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Resume Builder</h1>
-            <div className="flex gap-4">
-              <button
-                onClick={generateFullResume}
-                disabled={isGenerating}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {isGenerating ? (
-                  <>
-                    <ArrowPathIcon className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <SparklesIcon className="-ml-1 mr-2 h-5 w-5" />
-                    Generate with AI
-                  </>
-                )}
-              </button>
-              <button
-                onClick={() => window.print()}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <DocumentIcon className="-ml-1 mr-2 h-5 w-5" />
-                Export PDF
-              </button>
-            </div>
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Resume Builder</h1>
+          <div className="flex space-x-4">
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <DocumentIcon className="-ml-1 mr-2 h-5 w-5" />
+              Export PDF
+            </button>
+            
+            <button
+              onClick={handleFinish}
+              disabled={isSaving}
+              className={`inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
+                isSaving ? 'bg-green-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
+            >
+              {isSaving ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <CheckCircleIcon className="-ml-1 mr-2 h-5 w-5" />
+                  Finish & Save
+                </>
+              )}
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Main content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+        {saveError && (
+          <div className="mb-4 bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded">
+            {saveError}
+          </div>
+        )}
+
+        {/* Main content */}
         <div className="flex gap-8">
           {/* Form section */}
           <div className="w-1/2 bg-white rounded-lg shadow p-6">
@@ -238,27 +289,27 @@ const ResumeBuilder = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Template selector */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700">Template:</span>
-            <div className="flex gap-4">
-              {['modern', 'classic', 'minimal'].map(template => (
-                <button
-                  key={template}
-                  onClick={() => setSelectedTemplate(template)}
-                  className={`px-4 py-2 rounded-md text-sm font-medium ${
-                    selectedTemplate === template
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  {template.charAt(0).toUpperCase() + template.slice(1)}
-                </button>
-              ))}
+        {/* Template selector */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Template:</span>
+              <div className="flex gap-4">
+                {['modern', 'classic', 'minimal'].map(template => (
+                  <button
+                    key={template}
+                    onClick={() => setSelectedTemplate(template)}
+                    className={`px-4 py-2 rounded-md text-sm font-medium ${
+                      selectedTemplate === template
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    {template.charAt(0).toUpperCase() + template.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
