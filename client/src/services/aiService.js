@@ -35,7 +35,7 @@ const generatePrompts = {
     - Technical skills specific to the role
     - Industry-standard tools and technologies
     - Relevant soft skills
-    Return as a comma-separated list.
+    Return as a comma-separated list only 10 skills.
   `,
 
   'projects.description': (context = {}) => `

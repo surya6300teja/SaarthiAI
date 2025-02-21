@@ -10,10 +10,9 @@ const Footer = () => {
       { name: 'Contact', href: '/contact' },
     ],
     features: [
-      { name: 'AI Resume Builder', href: '#' },
-      { name: 'CV Templates', href: '#' },
-      { name: 'Cover Letters', href: '#' },
-      { name: 'Resume Examples', href: '#' },
+      { name: 'AI Resume Builder', href: '/dashboard/resume-builder' },
+      { name: 'Resume Examples', href: '/dashboard/resume-examples' },
+      { name: 'AI Job Fit Analyzer', href: '/skill-craft' },
     ],
     support: [
       { name: 'Help Center', href: '#' },
@@ -58,8 +57,8 @@ const Footer = () => {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           {/* Brand section */}
           <div className="space-y-8">
-            <Link to="/" className="text-2xl font-bold text-blue-600">
-              ResumeBuilder
+            <Link to="/" className="text-2xl font-bold ">
+              Saarthi <span className="text-#0000ff">AI</span>
             </Link>
             <p className="text-gray-500 text-sm">
               Create professional resumes in minutes with our AI-powered resume builder. 
@@ -119,7 +118,7 @@ const Footer = () => {
         {/* Bottom section */}
         <div className="mt-12 border-t border-gray-200 pt-8">
           <p className="text-sm text-gray-400 xl:text-center">
-            &copy; {new Date().getFullYear()} ResumeBuilder. All rights reserved.
+            &copy; {new Date().getFullYear()} SaarthiAI. All rights reserved.
           </p>
         </div>
       </div>

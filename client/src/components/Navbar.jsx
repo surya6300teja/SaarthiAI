@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import saarthiLogo from '../assets/saarthi-logo.png'; // Adjust path as needed
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -16,8 +17,7 @@ const Navbar = () => {
 
   const navigation = [
     { name: 'Home', href: '/', current: false },
-    { name: 'Templates', href: '/templates', current: false },
-    { name: 'Pricing', href: '/pricing', current: false },
+    { name: 'Resume Builder', href: '/dashboard/resume-builder', current: false },
   ];
 
   const userNavigation = [
@@ -31,33 +31,36 @@ const Navbar = () => {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="bg-white shadow-sm border-b">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 justify-between">
-              <div className="flex">
-                <div className="flex flex-shrink-0 items-center">
-                  <Link to="/" className="text-xl font-bold text-blue-600">
-                    SAARTHIAI
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16 items-center">
+              <div className="flex items-center">
+                <Link to="/" className="flex items-center space-x-2">
+                  <img 
+                    src={saarthiLogo} 
+                    alt="Saarthi AI Logo" 
+                    className="h-10 w-auto"
+                  />
+                 
+                </Link>
+              </div>
+              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={classNames(
+                      item.current
+                        ? 'border-blue-500 text-gray-900'
+                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                      'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
+                    )}
+                  >
+                    {item.name}
                   </Link>
-                </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={classNames(
-                        item.current
-                          ? 'border-blue-500 text-gray-900'
-                          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                        'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium'
-                      )}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
+                ))}
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 {token ? (
