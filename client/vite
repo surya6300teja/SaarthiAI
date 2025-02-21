@@ -1,0 +1,212 @@
+
+
+  VITE v6.1.1  ready in 161 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+2:35:02 PM [vite] (client) hmr update /src/pages/Home.jsx
+2:35:02 PM [vite] Internal server error: Failed to resolve import
+2:35:02 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Doe
+2:35:02 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Hom
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Home.jsx:3:28
+  17 |  import { Link } from "react-router-dom";
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/soli
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/solid";
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.png";
+     |                               ^
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.png";
+  21 |  const features = [
+      at TransformPluginContext._formatLog (file:///Users/suryate
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48670:41)
+      at TransformPluginContext.error (file:///Users/suryatejaram
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-C
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48667:16)
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810:23)
+      at process.processTicksAndRejections (node:internal/process
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/suryatejarampuram/hackathon-1/client
+      at async file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46929:37
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///Users/su
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/ch
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46856:7)
+      at async EnvironmentPluginContainer.transform (file:///User
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/nod
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48465:18)
+      at async loadAndTransform (file:///Users/suryatejarampuram/
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIe
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:42166:27)
+      at async viteTransformMiddleware (file:///Users/suryatejara
+      at async viteTransformMiddleware (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-
+      at async viteTransformMiddleware (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:43629:24)
+2:35:02 PM [vite] (client) ✨ new dependencies optimized: @heroic
+2:35:02 PM [vite] (client) ✨ new dependencies optimized: @heroicons/react/24/solid
+2:35:02 PM [vite] (client) ✨ optimized dependencies changed. rel
+2:35:02 PM [vite] (client) ✨ optimized dependencies changed. reloading
+2:35:03 PM [vite] (client) hmr update /src/App.jsx
+2:35:03 PM [vite] (client) Pre-transform error: Failed to resolve
+2:35:03 PM [vite] (client) Pre-transform error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.js
+2:35:03 PM [vite] (client) Pre-transform error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Hom
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Home.jsx:3:28
+  17 |  import { Link } from "react-router-dom";
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/soli
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/solid";
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.png";
+     |                               ^
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.png";
+  21 |  const features = [
+2:35:03 PM [vite] Internal server error: Failed to resolve import
+2:35:03 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Doe
+2:35:03 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Hom
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Home.jsx:3:28
+  17 |  import { Link } from "react-router-dom";
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/soli
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/solid";
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.png";
+     |                               ^
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.png";
+  21 |  const features = [
+      at TransformPluginContext._formatLog (file:///Users/suryate
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48670:41)
+      at TransformPluginContext.error (file:///Users/suryatejaram
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-C
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48667:16)
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810:23)
+      at process.processTicksAndRejections (node:internal/process
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/suryatejarampuram/hackathon-1/client
+      at async file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46929:37
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///Users/su
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/ch
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46856:7)
+      at async EnvironmentPluginContainer.transform (file:///User
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/nod
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48465:18)
+      at async loadAndTransform (file:///Users/suryatejarampuram/
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIe
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:42166:27)
+      at async viteTransformMiddleware (file:///Users/suryatejara
+      at async viteTransformMiddleware (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-
+      at async viteTransformMiddleware (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:43629:24)
+2:35:30 PM [vite] (client) hmr update /src/App.jsx
+2:36:33 PM [vite] (client) hmr update /src/pages/Home.jsx
+2:36:33 PM [vite] Internal server error: Failed to resolve import
+2:36:33 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Doe
+2:36:33 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Hom
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Home.jsx:3:28
+  17 |  import { Link } from "react-router-dom";
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/soli
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/solid";
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.png";
+     |                               ^
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.png";
+  21 |  const features = [
+      at TransformPluginContext._formatLog (file:///Users/suryate
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48670:41)
+      at TransformPluginContext.error (file:///Users/suryatejaram
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-C
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48667:16)
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810:23)
+      at process.processTicksAndRejections (node:internal/process
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/suryatejarampuram/hackathon-1/client
+      at async file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46929:37
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///Users/su
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/ch
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46856:7)
+      at async EnvironmentPluginContainer.transform (file:///User
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/nod
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48465:18)
+      at async loadAndTransform (file:///Users/suryatejarampuram/
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIe
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:42166:27)
+      at async viteTransformMiddleware (file:///Users/suryatejara
+      at async viteTransformMiddleware (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-
+      at async viteTransformMiddleware (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:43629:24)
+2:36:38 PM [vite] (client) hmr update /src/App.jsx
+2:36:38 PM [vite] Internal server error: Failed to resolve import
+2:36:38 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Doe
+2:36:38 PM [vite] Internal server error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Hom
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Home.jsx:3:28
+  17 |  import { Link } from "react-router-dom";
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/soli
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/solid";
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.png";
+     |                               ^
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.png";
+  21 |  const features = [
+      at TransformPluginContext._formatLog (file:///Users/suryate
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/
+      at TransformPluginContext._formatLog (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48670:41)
+      at TransformPluginContext.error (file:///Users/suryatejaram
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-C
+      at TransformPluginContext.error (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48667:16)
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810
+      at normalizeUrl (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46810:23)
+      at process.processTicksAndRejections (node:internal/process
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/suryatejarampuram/hackathon-1/client
+      at async file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46929:37
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///Users/su
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/ch
+      at async TransformPluginContext.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:46856:7)
+      at async EnvironmentPluginContainer.transform (file:///User
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/nod
+      at async EnvironmentPluginContainer.transform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:48465:18)
+      at async loadAndTransform (file:///Users/suryatejarampuram/
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIe
+      at async loadAndTransform (file:///Users/suryatejarampuram/hackathon-1/client/node_modules/vite/dist/node/chunks/dep-Cg8OuIew.js:42166:27)
+2:36:38 PM [vite] (client) Pre-transform error: Failed to resolve
+2:36:38 PM [vite] (client) Pre-transform error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.js
+2:36:38 PM [vite] (client) Pre-transform error: Failed to resolve import "../assets/resume-template-1.png" from "src/pages/Home.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Hom
+  File: /Users/suryatejarampuram/hackathon-1/client/src/pages/Home.jsx:3:28
+  17 |  import { Link } from "react-router-dom";
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/soli
+  18 |  import { CheckCircleIcon } from "@heroicons/react/24/solid";
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.
+  19 |  import resumeTemplate1 from "../assets/resume-template-1.png";
+     |                               ^
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.
+  20 |  import resumeTemplate2 from "../assets/resume-template-2.png";
+  21 |  const features = [
+2:36:42 PM [vite] (client) hmr update /src/App.jsx
+2:38:02 PM [vite] (client) hmr update /src/index.css
+2:38:03 PM [vite] (client) hmr update /src/index.css (x2)
+2:38:10 PM [vite] (client) page reload index.html
+2:38:10 PM [vite] (client) page reload index.html (x2)
