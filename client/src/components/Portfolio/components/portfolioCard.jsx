@@ -26,7 +26,7 @@ import EducationDesign3 from "./options/education/option3";
 import EducationDesign4 from "./options/education/option4";
 import GetInTouch from "./options/getInTouch/option1";
 import Code from "./Code";
-import { motion } from 'framer-motion';
+import { ArrowsPointingOutIcon, ArrowsPointingInIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 
 const PortfolioCard = (
   state,
@@ -390,206 +390,284 @@ const PortfolioCard = (
     <GetInTouch {...initialState.FormData} />
   );
 
-  const [activeSection, setActiveSection] = useState('projects');
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
+  const toggleFullScreen = () => {
+    setIsFullScreen(!isFullScreen);
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.5 }
+  const downloadHTML = () => {
+    try {
+      // Get the preview content directly from the DOM
+      const previewContent = document.querySelector('.preview-content');
+      if (!previewContent) {
+        throw new Error('Preview content not found');
+      }
+
+      // Create a full HTML document
+      const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - ${initialState.FormData.FirstName} ${initialState.FormData.LastName}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body class="bg-white">
+    <div class="portfolio-container">
+      ${previewContent.outerHTML}
+    </div>
+  </body>
+</html>`;
+
+      // Create and trigger download
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `portfolio-${initialState.FormData.FirstName.toLowerCase()}-${initialState.FormData.LastName.toLowerCase()}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success('Portfolio downloaded successfully!');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download portfolio. Please try again.');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-16">
-          <motion.h1 
-            className="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {state.title.experienceTitle}
-          </motion.h1>
-          <motion.p 
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            {state.title.about}
-          </motion.p>
-          
-          <motion.div 
-            className="flex justify-center space-x-6 mt-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            {state.socialLinks.map((link) => (
-              <a
-                key={link.platform}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-indigo-600 transition-colors duration-300"
-              >
-                <i className={`fab fa-${link.platform.toLowerCase()} text-2xl`}></i>
-              </a>
-            ))}
-          </motion.div>
-        </header>
-
-        <nav className="flex justify-center space-x-2 mb-16">
-          {['projects', 'skills', 'experience', 'education'].map((section) => (
-            <button
-              key={section}
-              onClick={() => setActiveSection(section)}
-              className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
-                activeSection === section
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200'
-                  : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
-              }`}
-            >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </button>
-          ))}
-        </nav>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="overflow-hidden"
-        >
-          {activeSection === 'projects' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project) => (
-                <motion.div
-                  key={project._id}
-                  variants={itemVariants}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+    <div className="flex-1 bg-gray-50 flex flex-col">
+      {/* All Design Options - Fixed at top */}
+      <div className="sticky top-0 z-20 bg-white border-b shadow-sm">
+        <div className="container mx-auto px-4 py-4">
+          {/* Navbar Designs */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Navigation Style</label>
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {['NavbarDesign1', 'NavbarDesign2', 'NavbarDesign3', 'NavbarDesign4'].map((design) => (
+                <button
+                  key={design}
+                  className={`px-4 py-2 rounded-lg transition-all duration-300 whitespace-nowrap ${
+                    navbarDesign === design 
+                      ? 'bg-indigo-600 text-white shadow-md' 
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                  onClick={() => handleDesignChange(design)}
                 >
-                  {project.image && (
-                    <div className="relative overflow-hidden h-48">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
-                      />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-3 text-gray-800">{project.title}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-sm font-medium"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-medium"
-                      >
-                        View Project
-                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                      </a>
-                    )}
-                  </div>
-                </motion.div>
+                  {design.replace('NavbarDesign', 'Design ')}
+                </button>
               ))}
             </div>
-          )}
+          </div>
 
-          {activeSection === 'skills' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {state.skills.map((skillCategory) => (
-                <motion.div
-                  key={skillCategory.category}
-                  variants={itemVariants}
-                  className="bg-white p-6 rounded-2xl shadow-lg"
-                >
-                  <h3 className="text-xl font-semibold mb-6 text-gray-800">
-                    {skillCategory.category}
-                  </h3>
-                  <div className="space-y-4">
-                    {skillCategory.items.map((skill) => (
-                      <div key={skill.name}>
-                        <div className="flex justify-between mb-2">
-                          <span className="text-gray-700 font-medium">{skill.name}</span>
-                          <span className="text-indigo-600 font-medium">{skill.level}%</span>
-                        </div>
-                        <div className="w-full bg-gray-100 rounded-full h-2.5">
-                          <motion.div
-                            className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2.5 rounded-full"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${skill.level}%` }}
-                            transition={{ duration: 1, delay: 0.2 }}
-                          ></motion.div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
+          {/* Section Design Options */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* About Design Options */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">About Section Style</label>
+              <div className="flex flex-wrap gap-2">
+                {['Option1', 'Option2', 'Option3', 'Option4'].map((option) => (
+                  <button
+                    key={option}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      topPortion === option 
+                        ? 'bg-indigo-600 text-white shadow-sm' 
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                    onClick={() => handleTopPortionChange(option)}
+                  >
+                    Style {option.replace('Option', '')}
+                  </button>
+                ))}
+              </div>
             </div>
-          )}
 
-          {activeSection === 'experience' && (
-            <div className="space-y-8">
-              {state.experience?.map((exp) => (
-                <motion.div
-                  key={exp._id}
-                  variants={itemVariants}
-                  className="bg-white p-6 rounded-2xl shadow-lg"
-                >
-                  <h3 className="text-xl font-semibold text-gray-800">{exp.position}</h3>
-                  <p className="text-indigo-600 mb-2">{exp.company}</p>
-                  <p className="text-gray-600 mb-4">{exp.duration}</p>
-                  <p className="text-gray-700">{exp.description}</p>
-                </motion.div>
-              ))}
+            {/* Experience Design Options */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Experience Section Style</label>
+              <div className="flex flex-wrap gap-2">
+                {['Option1', 'Option2', 'Option3', 'Option4'].map((option) => (
+                  <button
+                    key={option}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      experienceSection === option 
+                        ? 'bg-indigo-600 text-white shadow-sm' 
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                    onClick={() => handleExperienceChange(option)}
+                  >
+                    Style {option.replace('Option', '')}
+                  </button>
+                ))}
+              </div>
             </div>
-          )}
 
-          {activeSection === 'education' && (
-            <div className="space-y-8">
-              {state.education?.map((edu) => (
-                <motion.div
-                  key={edu._id}
-                  variants={itemVariants}
-                  className="bg-white p-6 rounded-2xl shadow-lg"
-                >
-                  <h3 className="text-xl font-semibold text-gray-800">{edu.degree}</h3>
-                  <p className="text-indigo-600 mb-2">{edu.institution}</p>
-                  <p className="text-gray-600 mb-4">{edu.duration}</p>
-                  <p className="text-gray-700">{edu.description}</p>
-                </motion.div>
-              ))}
+            {/* Education Design Options */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Education Section Style</label>
+              <div className="flex flex-wrap gap-2">
+                {['Option1', 'Option2', 'Option3', 'Option4'].map((option) => (
+                  <button
+                    key={option}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      educationSection === option 
+                        ? 'bg-indigo-600 text-white shadow-sm' 
+                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    }`}
+                    onClick={() => handleEducationChange(option)}
+                  >
+                    Style {option.replace('Option', '')}
+                  </button>
+                ))}
+              </div>
             </div>
-          )}
-        </motion.div>
+          </div>
+        </div>
       </div>
+
+      {/* Main Content Area - Below Navigation */}
+      <div className="container mx-auto px-4 py-4 flex-1">
+        <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-16rem)]">
+          {/* Left Panel - Form */}
+          <div className="w-full lg:w-1/2 flex flex-col">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full overflow-hidden">
+              {/* Form content only - Design options moved to top */}
+              <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                <div className="space-y-6">
+                  <h3 className="text-lg font-semibold text-gray-800 sticky top-0 bg-white py-2 z-10">Personal Information</h3>
+                  <Form
+                    FormData={{
+                      FullName: `${initialState.FormData.FirstName} ${initialState.FormData.LastName}`,
+                      ...initialState.FormData,
+                    }}
+                    onChange={handleChange}
+                    inputClassName="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors duration-200 bg-white text-white placeholder-white-400"
+                    labelClassName="block bg-white text-sm font-medium text-white-700 mb-1"
+                    toggleClassName="relative bg-white inline-flex items-center cursor-pointer"
+                    toggleSliderClassName="w-11 h-6 bg-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"
+                    isEducationEnabled={isEducationEnabled}
+                    isExperienceEnabled={isExperienceEnabled}
+                    isSkillEnabled={isSkillEnabled}
+                    isInterestEnabled={isInterestEnabled}
+                    isAwardsEnabled={isAwardsEnabled}
+                    isProjectEnabled={isProjectEnabled}
+                    toggleExperience={toggleExperience}
+                    toggleEducation={toggleEducation}
+                    toggleSkill={toggleSkill}
+                    toggleInterest={toggleInterest}
+                    toggleAward={toggleAward}
+                    toggleProject={toggleProject}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Panel - Preview */}
+          <div className={`${
+            isFullScreen 
+              ? 'fixed inset-0 z-50 p-4 bg-gray-900/50 backdrop-blur-sm' 
+              : 'w-full lg:w-1/2 flex flex-col'
+          }`}>
+            <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full overflow-auto relative ${
+              isFullScreen ? 'w-full h-full max-w-7xl mx-auto' : ''
+            }`}>
+              {/* Action Buttons */}
+              <div className="absolute top-4 right-4 flex gap-2 z-10">
+                {/* Download HTML Button */}
+                <button
+                  onClick={downloadHTML}
+                  className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 group"
+                  title="Download HTML"
+                >
+                  <DocumentArrowDownIcon className="h-5 w-5 text-gray-600 group-hover:text-gray-800" />
+                </button>
+
+                {/* Full Screen Toggle Button */}
+                <button
+                  onClick={toggleFullScreen}
+                  className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 group"
+                  title={isFullScreen ? "Exit Full Screen" : "Full Screen"}
+                >
+                  {isFullScreen ? (
+                    <ArrowsPointingInIcon className="h-5 w-5 text-gray-600 group-hover:text-gray-800" />
+                  ) : (
+                    <ArrowsPointingOutIcon className="h-5 w-5 text-gray-600 group-hover:text-gray-800" />
+                  )}
+                </button>
+              </div>
+
+              {/* Preview Content */}
+              <div className="preview-content">
+                <Preview
+                  {...initialState.FormData}
+                  FullName={`${initialState.FormData.FirstName} ${initialState.FormData.LastName}`}
+                  EducationDesign={selectedEducationDesign}
+                  ExperienceDesign={selectedExperienceDesign}
+                  isEducationEnabled={isEducationEnabled}
+                  isExperienceEnabled={isExperienceEnabled}
+                  isSkillEnabled={isSkillEnabled}
+                  isInterestEnabled={isInterestEnabled}
+                  isAwardsEnabled={isAwardsEnabled}
+                  isProjectEnabled={isProjectEnabled}
+                  Navbar={selectedNavbarDesign}
+                  getInTouch={getInTouchDesign}
+                  TopPortion={selectedTopPortionDesign}
+                  projectsTitle={projectsTitle}
+                  projects={projects}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme="light"
+      />
+
+      {/* Add this CSS to your global styles */}
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #ddd;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #ccc;
+        }
+      `}</style>
     </div>
   );
 };
@@ -606,8 +684,6 @@ const mapStateToProps = (state) => ({
   educationTitle: state.title.educationTitle,
   projectsTitle: state.title.projectsTitle,
   projects: state.projects.items,
-  socialLinks: state.socialLinks,
-  about: state.title.about,
 });
 
 export default connect(mapStateToProps)(PortfolioCard);

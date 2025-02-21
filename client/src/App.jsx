@@ -12,6 +12,10 @@ import RecruiterDashboard from './components/Recruiter/RecruiterDashboard'
 import UploadPage from './components/Skill-Craft/upload'
 import ResultPage from './components/Skill-Craft/result'
 import CoursesPage from './components/Skill-Craft/courses'
+import PortfolioCard from './components/Portfolio/components/portfolioCard'
+
+
+
 function App() {
   return (
     <Routes>
@@ -42,6 +46,7 @@ function App() {
         <Route path="/skill-craft" element={<UploadPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/portfolio-builder" element={< PortfolioCard />} />
       </Route>
     </Routes>
   )
