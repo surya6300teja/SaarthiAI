@@ -9,6 +9,9 @@ import ProtectedRoute from './components/ProtectedRoute'
 import RecruiterLogin from './components/Recruiter/RecruiterLogin'
 import RecruiterRegister from './components/Recruiter/RecruiterRegister'
 import RecruiterDashboard from './components/Recruiter/RecruiterDashboard'
+import UploadPage from './components/Skill-Craft/upload'
+import ResultPage from './components/Skill-Craft/result'
+import CoursesPage from './components/Skill-Craft/courses'
 function App() {
   return (
     <Routes>
@@ -32,9 +35,13 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
         <Route path="/recruiter/login" element={<RecruiterLogin />} />
         <Route path="/recruiter/register" element={<RecruiterRegister />} />
         <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
+        <Route path="/skill-craft" element={<UploadPage />} />
+        <Route path="/result" element={<ResultPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
       </Route>
     </Routes>
   )

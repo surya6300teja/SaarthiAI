@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const skillCraftRoutes = require('./routes/skillCraftRoutes');
 
 // Load env vars
 dotenv.config();
@@ -56,6 +57,7 @@ app.use('/api/v1/auth/recruiter', recruiterRoutes);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/ai', aiRoutes);
 app.use('/api/v1/resumes', resumes);
+app.use('/api/v1/skill-craft', skillCraftRoutes);
 
 // Error handler
 app.use(errorHandler);

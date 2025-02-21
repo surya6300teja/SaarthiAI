@@ -4,6 +4,32 @@ import axios from 'axios';
 import AIGenerateButton from './AIGenerateButton';
 import { PlusIcon, SparklesIcon, TrashIcon } from '@heroicons/react/24/outline';
 
+const jobRoles = [
+  'Software Engineer',
+  'Frontend Developer',
+  'Backend Developer',
+  'Full Stack Developer',
+  'DevOps Engineer',
+  'Data Scientist',
+  'UI/UX Designer',
+  'Product Manager',
+  'Project Manager',
+  'Business Analyst',
+  'System Administrator',
+  'Cloud Engineer',
+  'Mobile Developer',
+  'QA Engineer',
+  'Other'
+];
+
+const experienceLevels = [
+  { value: '0-2', label: '0-2 years' },
+  { value: '2-5', label: '2-5 years' },
+  { value: '5-8', label: '5-8 years' },
+  { value: '8-12', label: '8-12 years' },
+  { value: '12+', label: '12+ years' }
+];
+
 const ResumeForm = ({ 
   resumeData = {
     basics: {},
@@ -212,13 +238,21 @@ const ResumeForm = ({
               onChange={(e) => onInputChange('basics', { name: e.target.value })}
               className="input-field"
             />
-            <input
-              type="text"
-              placeholder="Job Title"
-              value={resumeData.basics.title}
+            
+            {/* Job Role Dropdown */}
+            <select
+              value={resumeData.basics.title || ''}
               onChange={(e) => onInputChange('basics', { title: e.target.value })}
-              className="input-field"
-            />
+              className="input-field bg-white"
+            >
+              <option value="">Select Job Role</option>
+              {jobRoles.map((role) => (
+                <option key={role} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
+
             <input
               type="email"
               placeholder="Email"
@@ -233,14 +267,44 @@ const ResumeForm = ({
               onChange={(e) => onInputChange('basics', { phone: e.target.value })}
               className="input-field"
             />
+
+            {/* Experience Level Dropdown */}
+            <select
+              value={resumeData.basics.experience || ''}
+              onChange={(e) => onInputChange('basics', { experience: e.target.value })}
+              className="input-field bg-white"
+            >
+              <option value="">Select Experience Level</option>
+              {experienceLevels.map((level) => (
+                <option key={level.value} value={level.value}>
+                  {level.label}
+                </option>
+              ))}
+            </select>
+
             <input
               type="text"
               placeholder="Location"
               value={resumeData.basics.location}
               onChange={(e) => onInputChange('basics', { location: e.target.value })}
-              className="input-field col-span-2"
+              className="input-field"
             />
           </div>
+
+          {/* Custom Job Role Input (shows only when 'Other' is selected) */}
+          {resumeData.basics.title === 'Other' && (
+            <input
+              type="text"
+              placeholder="Enter Custom Job Role"
+              value={resumeData.basics.customTitle || ''}
+              onChange={(e) => onInputChange('basics', { 
+                customTitle: e.target.value,
+                title: e.target.value // Update both custom and main title
+              })}
+              className="input-field mt-2"
+            />
+          )}
+
           <textarea
             placeholder="Professional Summary"
             value={resumeData.basics.summary}

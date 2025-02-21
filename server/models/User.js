@@ -39,6 +39,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  experience: {
+    type: String,
+    trim: true
+  },
   location: {
     type: String,
     trim: true
@@ -55,7 +59,18 @@ const UserSchema = new mongoose.Schema({
     degree: String,
     institution: String,
     year: Number
-  }]
+  }],
+  resumeData: {
+    type: Object,
+    default: null
+  },
+  resume: {
+    pdf: {
+      data: Buffer,
+      contentType: String
+    },
+    lastUpdated: Date
+  }
 }, {
   timestamps: true
 });

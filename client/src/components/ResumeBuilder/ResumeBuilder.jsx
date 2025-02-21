@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResumeForm from './ResumeForm';
 import ResumePreview from './ResumePreview';
@@ -6,6 +6,8 @@ import { aiService } from '../../services/aiService';
 import { SparklesIcon, DocumentIcon, ArrowPathIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import api from '../../services/api';
 import { toast } from 'react-hot-toast';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 const ResumeBuilder = () => {
   const navigate = useNavigate();
@@ -29,6 +31,8 @@ const ResumeBuilder = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const resumePreviewRef = useRef(null);
+  const contentRef = useRef(null);
 
   const handleInputChange = (section, value, index = null) => {
     setResumeData(prev => {
@@ -191,25 +195,64 @@ const ResumeBuilder = () => {
   };
 
   const handleFinish = async () => {
-    setIsSaving(true);
-    setSaveError('');
-    
+    if (!contentRef.current) {
+      alert('Resume content not ready. Please try again.');
+      return;
+    }
+
     try {
-      const response = await api.post('/resumes', {
-        ...resumeData,
-        lastUpdated: new Date().toISOString()
+      setIsSaving(true);
+
+      // First save the resume data
+      await api.post('/auth/save-resume', {
+        resumeData: {
+          basics: resumeData.basics,
+          experience: resumeData.experience,
+          education: resumeData.education,
+          skills: resumeData.skills,
+          projects: resumeData.projects,
+          achievements: resumeData.achievements
+        }
       });
 
-      if (response.data.success) {
-        toast.success('Resume saved successfully!');
-        navigate('/dashboard');
-      } else {
-        throw new Error(response.data.error || 'Failed to save resume');
-      }
+      // Then update user profile
+      await api.put('/auth/update-profile', {
+        jobRole: resumeData.basics.title,
+        experience: resumeData.basics.experience,
+        location: resumeData.basics.location
+      });
+
+      // Generate PDF
+      const element = contentRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      const pdfBlob = pdf.output('blob');
+
+      // Create FormData for PDF upload
+      const formData = new FormData();
+      formData.append('pdf', pdfBlob, `resume_${resumeData.basics.name || 'user'}_${Date.now()}.pdf`);
+
+      // Upload PDF
+      await api.post('/auth/upload-resume-pdf', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error saving resume:', error);
-      setSaveError(error.response?.data?.error || error.message || 'Failed to save resume');
-      toast.error('Failed to save resume. Please try again.');
+      alert('Failed to save resume. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -222,14 +265,7 @@ const ResumeBuilder = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Resume Builder</h1>
           <div className="flex space-x-4">
-            <button
-              onClick={() => window.print()}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <DocumentIcon className="-ml-1 mr-2 h-5 w-5" />
-              Export PDF
-            </button>
-            
+           
             <button
               onClick={handleFinish}
               disabled={isSaving}
@@ -237,20 +273,7 @@ const ResumeBuilder = () => {
                 isSaving ? 'bg-green-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'
               } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
             >
-              {isSaving ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <CheckCircleIcon className="-ml-1 mr-2 h-5 w-5" />
-                  Finish & Save
-                </>
-              )}
+              {isSaving ? 'Saving...' : 'Finish & Save'}
             </button>
           </div>
         </div>
@@ -280,10 +303,17 @@ const ResumeBuilder = () => {
           {/* Preview section */}
           <div className="w-1/2 sticky top-8">
             <div className="bg-white rounded-lg shadow p-6">
-              <ResumePreview
-                resumeData={resumeData}
-                template={selectedTemplate}
-              />
+              
+
+              <div 
+                ref={contentRef}
+                className="bg-white shadow-lg rounded-lg p-8"
+              >
+                <ResumePreview
+                  resumeData={resumeData}
+                  template={selectedTemplate}
+                />
+              </div>
             </div>
           </div>
         </div>

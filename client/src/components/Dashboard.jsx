@@ -1,68 +1,302 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { DocumentTextIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { 
+  DocumentTextIcon, 
+  UserCircleIcon,
+  SparklesIcon,
+  PlusCircleIcon,
+  ArrowRightIcon,
+  PencilIcon,
+  EyeIcon,
+  DocumentPlusIcon,
+  ChartBarIcon
+} from '@heroicons/react/24/outline';
+import api from '../services/api';
 
 const Dashboard = () => {
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Welcome to Your Dashboard</h1>
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        {/* Resume CTA */}
-        <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-          <div className="flex flex-col items-center text-center">
-            <DocumentTextIcon className="h-16 w-16 text-blue-600 mb-4" />
-            <h2 className="text-2xl font-semibold text-gray-900 mb-3">Create Your Resume</h2>
-            <p className="text-gray-600 mb-6">
-              Build a professional resume with our AI-powered builder. Get noticed by employers with ATS-friendly templates.
-            </p>
-            <Link
-              to="resume-builder"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Build Resume
-            </Link>
-          </div>
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      setError(null);
+      const response = await api.get('/auth/user-profile');
+      if (response.data.success) {
+        setUserData(response.data.user);
+      } else {
+        setError(response.data.error || 'Failed to fetch user data');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setError('Failed to load user data. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditResume = async () => {
+    try {
+      const response = await api.get(`/auth/resume/${userData._id}/edit`);
+      if (response.data.success) {
+        // Store resume data in localStorage for the resume builder
+        localStorage.setItem('resumeData', JSON.stringify(response.data.resumeData));
+        navigate('/dashboard/resume-builder', { 
+          state: { resumeData: response.data.resumeData }
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching resume data:', error);
+      alert('Failed to load resume data. Please try again.');
+    }
+  };
+
+  const handleViewResume = () => {
+    // Open resume in new tab
+    window.open(`/api/v1/auth/resume/${userData._id}/view`, '_blank');
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={fetchUserData}
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // If user has no resume or portfolio
+  if (!userData?.resume?.pdf?.data) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Welcome, {userData?.name}!
+          </h1>
+          <p className="text-lg text-gray-600">
+            Let's get started by creating your professional profile
+          </p>
         </div>
 
-        {/* Portfolio CTA */}
-        <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-          <div className="flex flex-col items-center text-center">
-            <UserCircleIcon className="h-16 w-16 text-purple-600 mb-4" />
-            <h2 className="text-2xl font-semibold text-gray-900 mb-3">Create Your Portfolio</h2>
-            <p className="text-gray-600 mb-6">
-              Showcase your work with a professional portfolio. Stand out with a personalized website to display your projects.
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Build Resume Card */}
+          <Link
+            to="/dashboard/resume-builder"
+            className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <DocumentTextIcon className="h-12 w-12 text-blue-600" />
+              <SparklesIcon className="h-6 w-6 text-yellow-400" />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-3">
+              Build Your Resume with AI
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Create a professional resume in minutes with our AI-powered builder
             </p>
-            <Link
-              to="/portfolio/build"
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-            >
-              Build Portfolio
-            </Link>
+            <div className="flex items-center text-blue-600 font-medium">
+              Get Started <ArrowRightIcon className="h-4 w-4 ml-2" />
+            </div>
+          </Link>
+
+          {/* Build Portfolio Card */}
+          <Link
+            to="/portfolio-builder"
+            className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <UserCircleIcon className="h-12 w-12 text-purple-600" />
+              <PlusCircleIcon className="h-6 w-6 text-purple-400" />
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-3">
+              Create Your Portfolio
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Showcase your work and achievements with a personalized portfolio
+            </p>
+            <div className="flex items-center text-purple-600 font-medium">
+              Get Started <ArrowRightIcon className="h-4 w-4 ml-2" />
+            </div>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // If user has resume and/or portfolio
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header Section */}
+      <div className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Welcome back, {userData?.name}! 👋
+              </h1>
+              <p className="mt-1 text-sm text-gray-500">
+                Manage your professional profile and documents
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              {userData?.resume?.pdf?.data && (
+                <Link
+                  to="/dashboard/resume-builder"
+                  className="inline-flex items-center px-4 py-2 border border-blue-600 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors duration-150"
+                >
+                  <DocumentPlusIcon className="h-5 w-5 mr-2" />
+                  Create New Resume
+                </Link>
+              )}
+              <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-150">
+                <ChartBarIcon className="h-5 w-5 mr-2" />
+                View Analytics
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Tips Section */}
-      <div className="mt-12">
-        <h2 className="text-xl font-semibold mb-6">Quick Tips</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-blue-50 p-6 rounded-lg">
-            <h3 className="font-medium text-blue-900 mb-2">ATS Optimization</h3>
-            <p className="text-blue-800 text-sm">
-              Our AI tools ensure your resume gets past Applicant Tracking Systems
-            </p>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Resume Section */}
+          <div className="md:col-span-1 bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center space-x-3">
+                  <DocumentTextIcon className="h-6 w-6 text-blue-600" />
+                  <h2 className="text-xl font-semibold text-gray-900">Your Resume</h2>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-gray-500">
+                    Last updated: {new Date(userData.resume.lastUpdated).toLocaleDateString()}
+                  </span>
+                  <div className="flex items-center space-x-3">
+                    <Link
+                      to="/resume-builder"
+                      className="text-gray-600 hover:text-blue-600 font-medium flex items-center transition-colors duration-150"
+                    >
+                      <PencilIcon className="h-4 w-4 mr-1" />
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => window.open(`/api/v1/auth/resume/${userData._id}/view`, '_blank')}
+                      className="text-gray-600 hover:text-blue-600 font-medium flex items-center transition-colors duration-150"
+                    >
+                      <EyeIcon className="h-4 w-4 mr-1" />
+                      View Full
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Resume Preview */}
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <p className="font-medium text-lg text-gray-900">{userData.jobRole}</p>
+                    <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                      {userData.experience} Experience
+                    </span>
+                  </div>
+                  <p className="text-gray-600 flex items-center">
+                    <svg className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {userData.location}
+                  </p>
+                </div>
+                
+                {/* PDF Preview */}
+                <div className="w-full bg-white rounded-lg shadow-inner" style={{ height: '400px' }}>
+                  {userData.resume?.pdf?.data ? (
+                    <embed
+                      src={`/api/v1/auth/resume/${userData._id}/view#toolbar=0`}
+                      type="application/pdf"
+                      width="100%"
+                      height="100%"
+                      className="rounded-lg scale-[1] origin-top-left"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <DocumentTextIcon className="h-12 w-12 text-gray-400 mb-2" />
+                      <p className="text-gray-500">No resume uploaded yet</p>
+                      <Link
+                        to="/resume-builder"
+                        className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-150"
+                      >
+                        <PlusCircleIcon className="h-5 w-5 mr-2" />
+                        Create Resume
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="bg-purple-50 p-6 rounded-lg">
-            <h3 className="font-medium text-purple-900 mb-2">Professional Portfolio</h3>
-            <p className="text-purple-800 text-sm">
-              Showcase your best work with our customizable portfolio templates
-            </p>
-          </div>
-          <div className="bg-green-50 p-6 rounded-lg">
-            <h3 className="font-medium text-green-900 mb-2">Career Growth</h3>
-            <p className="text-green-800 text-sm">
-              Get personalized tips to improve your professional presence
-            </p>
+
+          {/* Portfolio Section */}
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+            <div className="p-6">
+              <div className="flex items-center space-x-3 mb-6">
+                <UserCircleIcon className="h-6 w-6 text-purple-600" />
+                <h2 className="text-xl font-semibold text-gray-900">Portfolio</h2>
+              </div>
+              
+              {userData.portfolio ? (
+                <div>
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 mb-4">
+                    <p className="text-gray-600">
+                      Showcase your best work and achievements
+                    </p>
+                  </div>
+                  <div className="flex justify-end">
+                    <Link
+                      to="/portfolio-builder"
+                      className="text-purple-600 hover:text-purple-800 font-medium flex items-center transition-colors duration-150"
+                    >
+                      <PencilIcon className="h-4 w-4 mr-1" />
+                      Edit Portfolio
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <UserCircleIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 mb-4">
+                    You haven't created your portfolio yet
+                  </p>
+                  <Link
+                    to="/portfolio-builder"
+                    className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-150"
+                  >
+                    <PlusCircleIcon className="h-5 w-5 mr-2" />
+                    Create Portfolio
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -70,4 +304,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

@@ -66,6 +66,25 @@ const Home = () => {
               <BriefcaseIcon className="-ml-1 mr-2 h-5 w-5" />
               Recruiter Login
             </Link>
+            <Link
+                to="/skill-craft"
+                className="inline-flex items-center justify-center px-8 py-3 border border-indigo-600 text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:text-lg"
+              >
+                <svg 
+                  className="-ml-1 mr-2 h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M13 10V3L4 14h7v7l9-11h-7z" 
+                  />
+                </svg>
+                Try Skill-Craft
+              </Link>
           </div>
 
           {/* Features Grid */}
@@ -102,15 +121,36 @@ const Home = () => {
           </div>
 
           {/* Call to Action */}
-          <div className="mt-20">
-            <Link
-              to="/register"
-              className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:text-lg"
-            >
-              Get Started for Free
-            </Link>
+          <div className="mt-20 space-y-6">
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link
+                to="/register"
+                className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:text-lg"
+              >
+                Get Started for Free
+              </Link>
+              <Link
+                to="/skill-craft"
+                className="inline-flex items-center justify-center px-8 py-3 border border-indigo-600 text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:text-lg"
+              >
+                <svg 
+                  className="-ml-1 mr-2 h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M13 10V3L4 14h7v7l9-11h-7z" 
+                  />
+                </svg>
+                Try Skill-Craft
+              </Link>
+            </div>
             <p className="mt-3 text-sm text-gray-500">
-              No credit card required
+              No credit card required • Instant access
             </p>
           </div>
         </div>

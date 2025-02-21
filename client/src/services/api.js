@@ -3,11 +3,11 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: 'http://localhost:4000/api/v1',
   headers: {
-    'Content-Type': 'application/json',
-  },
+    'Content-Type': 'application/json'
+  }
 });
 
-// Add a request interceptor to include the auth token
+// Add request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -21,7 +21,7 @@ api.interceptors.request.use(
   }
 );
 
-// Add a response interceptor for error handling
+// Add response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
   (error) => {
