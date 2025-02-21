@@ -49,8 +49,10 @@ app.use((req, res, next) => {
 const auth = require('./routes/authRoutes');
 const resumes = require('./routes/resumeRoutes');
 const aiRoutes = require('./routes/ai.routes');
+const recruiterRoutes = require('./routes/recruiterRoutes');
 
 // Mount routers
+app.use('/api/v1/auth/recruiter', recruiterRoutes);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/ai', aiRoutes);
 app.use('/api/v1/resumes', resumes);

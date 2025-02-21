@@ -1,16 +1,59 @@
 import { useState, useEffect } from 'react';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
+import { UserCircleIcon } from '@heroicons/react/24/solid';
+import api from '../../services/api';
 
 const CandidateList = () => {
   const [candidates, setCandidates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({
-    job: 'all',
-    status: 'all',
-    skillLevel: 'all'
+    jobRole: 'all',
+    location: 'all',
+    experience: 'all'
   });
   const [sortBy, setSortBy] = useState('matchScore');
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+
+  useEffect(() => {
+    fetchCandidates();
+  }, [filters]);
+
+  const fetchCandidates = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      
+      // Add filters to query params
+      if (filters.jobRole !== 'all') params.append('jobRole', filters.jobRole);
+      if (filters.location !== 'all') params.append('location', filters.location);
+      if (filters.experience !== 'all') params.append('experience', filters.experience);
+
+      const response = await api.get(`/auth/recruiter/candidates?${params.toString()}`);
+      
+      if (response.data.success) {
+        const formattedCandidates = response.data.candidates.map(candidate => ({
+          ...candidate,
+          createdAt: candidate.createdAt ? new Date(candidate.createdAt) : null,
+          updatedAt: candidate.updatedAt ? new Date(candidate.updatedAt) : null
+        }));
+        
+        // Sort candidates by match score
+        const sortedCandidates = formattedCandidates.sort((a, b) => b.matchScore - a.matchScore);
+        
+        setCandidates(sortedCandidates);
+      } else {
+        throw new Error(response.data.error || 'Failed to fetch candidates');
+      }
+    } catch (err) {
+      console.error('Error fetching candidates:', err);
+      setError('Failed to load candidates. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({
@@ -24,9 +67,80 @@ const CandidateList = () => {
     // Implement sorting logic
   };
 
+  const formatDate = (date) => {
+    if (!date) return 'N/A';
+    try {
+      return format(new Date(date), 'MMM dd, yyyy');
+    } catch (error) {
+      console.error('Date formatting error:', error);
+      return 'Invalid date';
+    }
+  };
+
+  const filteredCandidates = candidates.filter(candidate => 
+    candidate.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    candidate.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const jobRoles = [
+    'Software Engineer',
+    'Frontend Developer',
+    'Backend Developer',
+    'Full Stack Developer',
+    'DevOps Engineer',
+    'Data Scientist',
+    'UI/UX Designer',
+    'Product Manager',
+    'Project Manager'
+  ];
+
+  const locations = [
+    'Bangalore',
+    'Mumbai',
+    'Delhi',
+    'Hyderabad',
+    'Chennai',
+    'Pune',
+    'Remote'
+  ];
+
+  const experienceLevels = [
+    { value: '0-2', label: '0-2 years' },
+    { value: '2-5', label: '2-5 years' },
+    { value: '5-8', label: '5-8 years' },
+    { value: '8+', label: '8+ years' }
+  ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded">
+        {error}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Filters */}
+      {/* Search Bar */}
+      <div className="flex justify-between items-center">
+        <input
+          type="text"
+          placeholder="Search candidates..."
+          className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* Updated Filters */}
       <div className="bg-white p-4 rounded-lg shadow">
         <div className="flex items-center space-x-4">
           <div className="flex items-center">
@@ -35,36 +149,42 @@ const CandidateList = () => {
           </div>
           
           <select
-            value={filters.job}
-            onChange={(e) => handleFilterChange('job', e.target.value)}
-            className="rounded-md border-gray-300"
+            value={filters.jobRole}
+            onChange={(e) => handleFilterChange('jobRole', e.target.value)}
+            className="rounded-md border-gray-300 text-sm"
           >
-            <option value="all">All Jobs</option>
-            {/* Add job options dynamically */}
+            <option value="all">All Job Roles</option>
+            {jobRoles.map(role => (
+              <option key={role} value={role.toLowerCase().replace(/\s+/g, '-')}>
+                {role}
+              </option>
+            ))}
           </select>
 
           <select
-            value={filters.status}
-            onChange={(e) => handleFilterChange('status', e.target.value)}
-            className="rounded-md border-gray-300"
+            value={filters.location}
+            onChange={(e) => handleFilterChange('location', e.target.value)}
+            className="rounded-md border-gray-300 text-sm"
           >
-            <option value="all">All Statuses</option>
-            <option value="new">New</option>
-            <option value="reviewing">Reviewing</option>
-            <option value="shortlisted">Shortlisted</option>
-            <option value="interviewed">Interviewed</option>
-            <option value="rejected">Rejected</option>
+            <option value="all">All Locations</option>
+            {locations.map(location => (
+              <option key={location} value={location.toLowerCase()}>
+                {location}
+              </option>
+            ))}
           </select>
 
           <select
-            value={filters.skillLevel}
-            onChange={(e) => handleFilterChange('skillLevel', e.target.value)}
-            className="rounded-md border-gray-300"
+            value={filters.experience}
+            onChange={(e) => handleFilterChange('experience', e.target.value)}
+            className="rounded-md border-gray-300 text-sm"
           >
-            <option value="all">All Levels</option>
-            <option value="junior">Junior</option>
-            <option value="mid">Mid-Level</option>
-            <option value="senior">Senior</option>
+            <option value="all">All Experience Levels</option>
+            {experienceLevels.map(level => (
+              <option key={level.value} value={level.value}>
+                {level.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -111,7 +231,7 @@ const CandidateList = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {candidates.map((candidate) => (
+            {filteredCandidates.map((candidate) => (
               <tr
                 key={candidate._id}
                 className="hover:bg-gray-50 cursor-pointer"
@@ -120,10 +240,9 @@ const CandidateList = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
-                      <img
-                        className="h-10 w-10 rounded-full"
-                        src={candidate.avatar || '/default-avatar.png'}
-                        alt=""
+                      <UserCircleIcon 
+                        className="h-10 w-10 text-gray-400" 
+                        aria-hidden="true" 
                       />
                     </div>
                     <div className="ml-4">
@@ -152,7 +271,7 @@ const CandidateList = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{candidate.jobTitle}</div>
                   <div className="text-sm text-gray-500">
-                    Applied {format(new Date(candidate.appliedDate), 'MMM dd, yyyy')}
+                    Applied {formatDate(candidate.appliedDate)}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

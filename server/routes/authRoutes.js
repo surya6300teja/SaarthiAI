@@ -8,22 +8,23 @@ const { auth } = require('../middleware/auth');
 // Register user
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { name, email, password } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        error: 'User already exists'
+        error: 'Email already registered'
       });
     }
 
-    // Create new user
+    // Create new user with role
     const user = new User({
+      name,
       email: email.toLowerCase(),
       password,
-      name
+      role: 'user'  // Explicitly set role to 'user'
     });
 
     await user.save();

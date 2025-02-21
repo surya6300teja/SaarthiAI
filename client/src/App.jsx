@@ -6,7 +6,9 @@ import Register from './pages/Register'
 import Dashboard from './components/Dashboard'
 import ResumeBuilder from './components/ResumeBuilder/ResumeBuilder'
 import ProtectedRoute from './components/ProtectedRoute'
-
+import RecruiterLogin from './components/Recruiter/RecruiterLogin'
+import RecruiterRegister from './components/Recruiter/RecruiterRegister'
+import RecruiterDashboard from './components/Recruiter/RecruiterDashboard'
 function App() {
   return (
     <Routes>
@@ -30,6 +32,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/recruiter/login" element={<RecruiterLogin />} />
+        <Route path="/recruiter/register" element={<RecruiterRegister />} />
+        <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
       </Route>
     </Routes>
   )

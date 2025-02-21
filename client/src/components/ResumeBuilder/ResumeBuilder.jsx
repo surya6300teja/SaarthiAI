@@ -195,22 +195,20 @@ const ResumeBuilder = () => {
     setSaveError('');
     
     try {
-      const response = await api.post('/api/v1/resumes', {
+      const response = await api.post('/resumes', {
         ...resumeData,
         lastUpdated: new Date().toISOString()
       });
 
       if (response.data.success) {
-        // Show success message
         toast.success('Resume saved successfully!');
-        // Redirect to dashboard or resume list
         navigate('/dashboard');
       } else {
         throw new Error(response.data.error || 'Failed to save resume');
       }
     } catch (error) {
       console.error('Error saving resume:', error);
-      setSaveError(error.message || 'Failed to save resume');
+      setSaveError(error.response?.data?.error || error.message || 'Failed to save resume');
       toast.error('Failed to save resume. Please try again.');
     } finally {
       setIsSaving(false);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4000/api/v1',  // Match your backend server port
+  baseURL: 'http://localhost:4000/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -30,28 +30,4 @@ api.interceptors.response.use(
   }
 );
 
-export const resumeService = {
-  create: (data) => api.post('/resumes', data),
-  getAll: () => api.get('/resumes'),
-  getById: (id) => api.get(`/resumes/${id}`),
-  update: (id, data) => api.put(`/resumes/${id}`, data),
-  delete: (id) => api.delete(`/resumes/${id}`),
-};
-
-export const portfolioService = {
-  create: (data) => api.post('/portfolios', data),
-  getAll: () => api.get('/portfolios'),
-  getById: (id) => api.get(`/portfolios/${id}`),
-  update: (id, data) => api.put(`/portfolios/${id}`, data),
-  delete: (id) => api.delete(`/portfolios/${id}`),
-};
-
-export const jobService = {
-  create: (data) => api.post('/jobs', data),
-  getAll: () => api.get('/jobs'),
-  getById: (id) => api.get(`/jobs/${id}`),
-  apply: (id) => api.post(`/jobs/${id}/apply`),
-  getApplications: () => api.get('/applications'),
-};
-
-export default api; 
+export default api;

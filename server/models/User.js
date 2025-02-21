@@ -29,7 +29,33 @@ const UserSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  role: {
+    type: String,
+    enum: ['user', 'recruiter'],
+    default: 'user'
+  },
+  jobRole: {
+    type: String,
+    trim: true
+  },
+  location: {
+    type: String,
+    trim: true
+  },
+  yearsOfExperience: {
+    type: Number,
+    min: 0
+  },
+  skills: [{
+    type: String,
+    trim: true
+  }],
+  education: [{
+    degree: String,
+    institution: String,
+    year: Number
+  }]
 }, {
   timestamps: true
 });

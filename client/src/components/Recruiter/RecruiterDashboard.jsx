@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
+import api from '../../services/api';
 import JobPostings from './JobPostings';
 import CandidateList from './CandidateList';
 import InterviewScheduler from './InterviewScheduler';
@@ -11,24 +12,59 @@ const RecruiterDashboard = () => {
     totalCandidates: 0,
     scheduledInterviews: 0
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
+
+  const fetchDashboardStats = async () => {
+    try {
+      const response = await api.get('/auth/recruiter/dashboard-stats');
+      
+      if (response.data.success) {
+        setStats({
+          activeJobs: response.data.stats.activeJobs || 0,
+          totalCandidates: response.data.stats.totalCandidates || 0,
+          scheduledInterviews: response.data.stats.scheduledInterviews || 0
+        });
+      } else {
+        throw new Error(response.data.error || 'Failed to fetch dashboard stats');
+      }
+    } catch (err) {
+      console.error('Error fetching dashboard stats:', err);
+      setError('Failed to load dashboard statistics');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
+      {error && (
+        <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded">
+          {error}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold mb-2">Active Jobs</h3>
-          <p className="text-3xl font-bold text-blue-600">{stats.activeJobs}</p>
+          <p className="text-3xl font-bold text-blue-600">
+            {loading ? '...' : stats.activeJobs}
+          </p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold mb-2">Total Candidates</h3>
           <p className="text-3xl font-bold text-green-600">
-            {stats.totalCandidates}
+            {loading ? '...' : stats.totalCandidates}
           </p>
         </div>
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-semibold mb-2">Scheduled Interviews</h3>
           <p className="text-3xl font-bold text-purple-600">
-            {stats.scheduledInterviews}
+            {loading ? '...' : stats.scheduledInterviews}
           </p>
         </div>
       </div>
