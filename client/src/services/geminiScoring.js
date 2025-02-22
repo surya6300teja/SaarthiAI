@@ -19,7 +19,7 @@ Return only a JSON object with the following structure:
 
 export const scoreCandidate = async (candidate, jobRequirements) => {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" }); // Using more stable model
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" }); // Using more stable model
 
     const prompt = `
 ${SCORING_PROMPT}

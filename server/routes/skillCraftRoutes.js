@@ -43,7 +43,7 @@ const upload = multer({ storage });
       // Delete the uploaded file after processing
       fs.unlinkSync(pdfFilePath);
   
-      const apiKey = "AIzaSyCSCOvg-HI0goallfKXIHhuR6asZ_kjeBw";
+      const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
         throw new Error('API key is missing.');
       }
@@ -156,7 +156,7 @@ router.post('/courses', async (req, res) => {
       const receivedList = req.body.list;
       console.log('Received List:', receivedList);
   
-      const apiKey = "AIzaSyCSCOvg-HI0goallfKXIHhuR6asZ_kjeBw";
+      const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
         throw new Error('API key is missing.');
       }

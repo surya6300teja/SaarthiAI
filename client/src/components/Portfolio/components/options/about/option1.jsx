@@ -1,9 +1,10 @@
 import React from 'react';
-import flowerImage from "../../images/Vector.png";
-import flowerImage2 from "../../images/Vector2.png";
-import HalfStar from "../../images/half_star.png";
-import Scratch from "../../images/sratch.png";
-import Arrow from "../../images/arrow.png";
+import { 
+  SparklesIcon,
+  StarIcon,
+  ArrowDownIcon,
+  CursorArrowRaysIcon
+} from '@heroicons/react/24/solid';
 
 const Option1 = (props) => {
   const {
@@ -15,15 +16,14 @@ const Option1 = (props) => {
     URL
   } = props;
 
-
   return (
     <div>
       <div className="h-screen w-full absolute left-0 top-0 bg-black">
         <span className="absolute right-20 md:right-24 bottom-24">
-          <img className="h-20 w-20" src={flowerImage2} alt="flower" />
+          <SparklesIcon className="h-20 w-20 text-[#FFF7E9] opacity-40" />
         </span>
         <span className="absolute right-4 md:right-4 bottom-40 md:bottom-36">
-          <img className="h-12 w-12" src={flowerImage2} />
+          <SparklesIcon className="h-12 w-12 text-[#FFF7E9] opacity-30" />
         </span>
         <div
           className="h-[100vh] absolute top-48 md:top-40 left-0 w-full pl-4 md:pl-32"
@@ -34,7 +34,7 @@ const Option1 = (props) => {
           >
             <span>Hi, I am</span>
             <span>
-              <img className="h-9 w-9" src={flowerImage} />
+              <StarIcon className="h-9 w-9 text-[#FFF7E9]" />
             </span>
           </div>
           <div
@@ -80,14 +80,14 @@ const Option1 = (props) => {
             {Description.slice(0, 500)}
           </div>
           <div className="absolute left-0 bottom-60 md:bottom-36 h-16 md:h-20 w-16 md:w-20">
-            <img src={HalfStar} />
+            <StarIcon className="h-full w-full text-[#FFF7E9] opacity-50" />
           </div>
         </div>
 
         <div className="relative h-fit my-auto p-2 md:p-4 border border-red-700 ml-32 md:ml-20 rounded-xl flex items-center">
           <img className="h-72 w-80 md:w-72" src={Thubmnail} alt={FirstName} />
           <div className="absolute -left-16 -bottom-24 md:-bottom-32 h-40 w-36 md:w-40">
-            <img src={Arrow} alt="arrow" />
+            <ArrowDownIcon className="h-full w-full text-[#FFF7E9] rotate-45" />
           </div>
           <div
             className="absolute -left-[5.7rem] md:-left-[5.5rem] -bottom-[3rem] md:-bottom-20 h-36 md:h-40 w-36 md:w-40 -rotate-[33deg] text-2xl"
@@ -96,7 +96,7 @@ const Option1 = (props) => {
             me
           </div>
           <div className="absolute -left-32 md:-left-32 -bottom-[4.5rem] md:-bottom-[6.3rem] h-32 w-32 -rotate-6">
-            <img src={Scratch} />
+            <CursorArrowRaysIcon className="h-full w-full text-[#FFF7E9] opacity-60" />
           </div>
         </div>
       </div>
