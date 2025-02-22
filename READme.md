@@ -8,13 +8,12 @@ AI-Powered Portfolio & Resume Builder (MERN Stack) :SaarthiAI – (Saarthi = Gui
 
 ✔ AI-assisted job description matching (suggests resume improvements).
 ✔ Automated resume formatting & optimization (custom templates, export options).
-✔Portfolio Builder (users can showcase projects, skills, and certifications).
+✔ Portfolio Builder (users can showcase projects, skills, and certifications).
 ✔ User authentication & database storage (MongoDB).
+✔ Analytics dashboard (tracks job applications & interview readiness).
+✔ Recruiter portal (candidate shortlisting & hiring).
 
 🛠 Pending Features:
-🔲Analytics dashboard (tracks job applications & interview readiness).
-🔲 Recruiter portal (candidate shortlisting & hiring).
-🔲 Community Forum (discussion platform for networking).
 🔲 UI Enhancements & Final Deployment.
 
 🔹 Tech Stack
