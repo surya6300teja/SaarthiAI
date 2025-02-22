@@ -56,7 +56,7 @@ const NewEducationForm = ({ educations = [], onCreatePressed }) => {
     >
      
       <input
-        className="w-3/4 dark:bg-zinc-800 form-control form-control-sm mb-2 border p-1 rounded-sm text-sm capitalize outline-none"
+        className="w-3/4 dark:bg-white-800 form-control form-control-sm mb-2 border p-1 rounded-sm text-sm capitalize outline-none"
         type="text"
         placeholder="University/College"
         value={university}
@@ -64,14 +64,14 @@ const NewEducationForm = ({ educations = [], onCreatePressed }) => {
       />
        <div>
         <input
-          className="w-1/2 dark:bg-zinc-800 form-control form-control-sm mb-2 border py-1 px-2 rounded-l-sm text-sm capitalize outline-none"
+          className="w-1/2 dark:bg-white-800 form-control form-control-sm mb-2 border py-1 px-2 rounded-l-sm text-sm capitalize outline-none"
           type="text"
           placeholder="Degree"
           value={degree}
           onChange={(e) => setDegree(e.target.value)}
         />
         <input
-          className="w-1/4 dark:bg-zinc-800 form-control form-control-sm mb-2 border py-1 px-2 rounded-r-sm text-sm capitalize outline-none"
+          className="w-1/4 dark:bg-white-800 form-control form-control-sm mb-2 border py-1 px-2 rounded-r-sm text-sm capitalize outline-none"
           type="number"
           placeholder="GPA"
           value={gpa}
@@ -79,27 +79,27 @@ const NewEducationForm = ({ educations = [], onCreatePressed }) => {
         />
       </div>
       <input
-          className="w-3/4 dark:bg-zinc-800 form-control form-control-sm mb-2 border py-1 px-2 rounded-sm text-sm capitalize outline-none"
+          className="w-3/4 dark:bg-white-800 form-control form-control-sm mb-2 border py-1 px-2 rounded-sm text-sm capitalize outline-none"
           type="text"
           placeholder="Branch/Department"
           value={branch}
           onChange={(e) => setBranch(e.target.value)}
         />
       <div className="flex flex-col flex-wrap md:flex-row md:items-center gap-2">
-        <div className="dark:bg-zinc-800 col my-1 p-1 border rounded-sm w-40 text-sm">
+        <div className="dark:bg-white-800 col my-1 p-1 border rounded-sm w-40 text-sm">
           <input
             type="date"
-            className="dark:bg-zinc-800 outline-none p-1"
+            className="dark:bg-white-800 outline-none p-1"
             placeholder="start Date"
             onChange={(e) =>
               setStartDate(moment(e.target.value).format("MM YYYY"))
             }
           />
         </div>
-        <div className="dark:bg-zinc-800 col p-1 border rounded-sm w-40 text-sm">
+        <div className="dark:bg-white-800 col p-1 border rounded-sm w-40 text-sm">
           <input
             type="date"
-            className="dark:bg-zinc-800 outline-none p-1"
+            className="dark:bg-white-800 outline-none p-1"
             placeholder="End Date"
             onChange={(e) =>
               setEndDate(moment(e.target.value).format("MM YYYY"))

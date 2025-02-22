@@ -5,6 +5,7 @@ const errorHandler = require('./middleware/error');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const skillCraftRoutes = require('./routes/skillCraftRoutes');
+const jobApplicationsRoutes = require('./routes/jobApplications');
 
 // Load env vars
 dotenv.config();
@@ -58,6 +59,7 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/ai', aiRoutes);
 app.use('/api/v1/resumes', resumes);
 app.use('/api/v1/skill-craft', skillCraftRoutes);
+app.use('/api/v1/job-applications', jobApplicationsRoutes);
 
 // Error handler
 app.use(errorHandler);

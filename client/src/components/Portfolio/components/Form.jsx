@@ -130,7 +130,7 @@ const Form = ({ FormData, onChange, isExperienceEnabled, isEducationEnabled, isS
       </div>
 
       {/* Experience Section */}
-      <div className={`rounded-lg border ${isExperienceEnabled ? "border-gray-200 bg-white" : "border-gray-100 bg-gray-50"} p-6`}>
+      <div className={`rounded-lg border ${isExperienceEnabled ? "border-gray-200 bg-white" : "border-gray-100 bg-white-50"} p-6`}>
         <div className="space-y-4">
           <SectionTitle initialTitle="Experience" titleType="experience"/>
           <ExperienceList />
@@ -138,7 +138,7 @@ const Form = ({ FormData, onChange, isExperienceEnabled, isEducationEnabled, isS
       </div>
 
       {/* Education Section */}
-      <div className={`rounded-lg border ${isEducationEnabled ? "border-gray-200 bg-white" : "border-gray-100 bg-gray-50"} p-6`}>
+      <div className={`rounded-lg border ${isEducationEnabled ? "border-gray-200 bg-white" : "border-gray-100 bg-white-50"} p-6`}>
         <div className="space-y-4">
           <SectionTitle initialTitle="Education" titleType='education'/>
           <EducationList />
@@ -146,7 +146,7 @@ const Form = ({ FormData, onChange, isExperienceEnabled, isEducationEnabled, isS
       </div>
 
       {/* Skills Section */}
-      <div className={`rounded-lg border ${isSkillEnabled ? "border-gray-200 bg-white" : "border-gray-100 bg-gray-50"} p-6`}>
+      <div className={`rounded-lg border ${isSkillEnabled ? "border-gray-200 bg-white" : "border-gray-100 bg-white-50"} p-6`}>
         <div className="space-y-4">
           <SectionTitle initialTitle="Skills" titleType="skills"/>
           <SkillsList />

@@ -7,9 +7,13 @@ import {
   DocumentTextIcon,
   AdjustmentsHorizontalIcon,
   UserGroupIcon,
-  XMarkIcon
+  XMarkIcon,
+  PlusIcon,
+  SparklesIcon,
+  ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 import api from '../../services/api';
+import AICandidateRankings from './AICandidateRankings';
 
 const PDFViewerModal = ({ isOpen, onClose, candidateId }) => {
   if (!isOpen || !candidateId) return null;
@@ -56,6 +60,17 @@ const CandidateList = () => {
     location: 'all',
     experience: 'all'
   });
+  const [jobRequirements, setJobRequirements] = useState({
+    role: 'Software Developer',
+    experience: 'entry',
+    skills: ['JavaScript'],
+    education: 'bachelors',
+    location: ''
+  });
+  const [showFilters, setShowFilters] = useState(false);
+  const [skillInput, setSkillInput] = useState('');
+  const [showAIAnalysis, setShowAIAnalysis] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     fetchCandidates();
@@ -110,6 +125,40 @@ const CandidateList = () => {
       return;
     }
     setSelectedCandidateId(candidateId);
+  };
+
+  const handleAddSkill = () => {
+    if (skillInput.trim() && !jobRequirements.skills.includes(skillInput.trim())) {
+      setJobRequirements(prev => ({
+        ...prev,
+        skills: [...prev.skills, skillInput.trim()]
+      }));
+      setSkillInput('');
+    }
+  };
+
+  const handleRemoveSkill = (skillToRemove) => {
+    setJobRequirements(prev => ({
+      ...prev,
+      skills: prev.skills.filter(skill => skill !== skillToRemove)
+    }));
+  };
+
+  const handleAnalyze = async () => {
+    try {
+      setIsAnalyzing(true);
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setShowAIAnalysis(true);
+    } catch (error) {
+      console.error('Analysis failed:', error);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const isRequirementsValid = () => {
+    return true;
   };
 
   return (
@@ -310,6 +359,169 @@ const CandidateList = () => {
         onClose={() => setSelectedCandidateId(null)}
         candidateId={selectedCandidateId}
       />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-900">Candidate Rankings</h1>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              >
+                <AdjustmentsHorizontalIcon className="h-5 w-5 mr-2" />
+                {showFilters ? 'Hide Filters' : 'Show Filters'}
+              </button>
+              {!showAIAnalysis && (
+                <button
+                  onClick={handleAnalyze}
+                  disabled={isAnalyzing}
+                  className={`flex items-center px-4 py-2 rounded-md text-white
+                    ${isAnalyzing 
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700'}
+                  `}
+                >
+                  <SparklesIcon className="h-5 w-5 mr-2" />
+                  {isAnalyzing ? 'Analyzing...' : 'Analyze with AI'}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {showFilters && (
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Role Title
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    value={jobRequirements.role}
+                    onChange={(e) => setJobRequirements(prev => ({
+                      ...prev,
+                      role: e.target.value
+                    }))}
+                    placeholder="e.g. Frontend Developer"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Experience Level
+                  </label>
+                  <select
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    value={jobRequirements.experience}
+                    onChange={(e) => setJobRequirements(prev => ({
+                      ...prev,
+                      experience: e.target.value
+                    }))}
+                  >
+                    <option value="entry">Entry Level (0-2 years)</option>
+                    <option value="mid">Mid Level (3-5 years)</option>
+                    <option value="senior">Senior Level (5+ years)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Education Level
+                  </label>
+                  <select
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    value={jobRequirements.education}
+                    onChange={(e) => setJobRequirements(prev => ({
+                      ...prev,
+                      education: e.target.value
+                    }))}
+                  >
+                    <option value="bachelors">Bachelor's Degree</option>
+                    <option value="masters">Master's Degree</option>
+                    <option value="phd">PhD</option>
+                  </select>
+                </div>
+
+                <div className="lg:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Required Skills
+                  </label>
+                  <div className="flex gap-2 mb-2">
+                    <input
+                      type="text"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                      value={skillInput}
+                      onChange={(e) => setSkillInput(e.target.value)}
+                      placeholder="Add a skill"
+                      onKeyPress={(e) => e.key === 'Enter' && handleAddSkill()}
+                    />
+                    <button
+                      onClick={handleAddSkill}
+                      className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    >
+                      <PlusIcon className="h-5 w-5" />
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {jobRequirements.skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
+                      >
+                        {skill}
+                        <button
+                          onClick={() => handleRemoveSkill(skill)}
+                          className="ml-2 text-blue-600 hover:text-blue-800"
+                        >
+                          <XMarkIcon className="h-4 w-4" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {isAnalyzing ? (
+          <div className="flex flex-col items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p className="mt-4 text-gray-600">AI is analyzing candidates based on your requirements...</p>
+          </div>
+        ) : showAIAnalysis ? (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center">
+                <SparklesIcon className="h-6 w-6 text-blue-600 mr-2" />
+                <h2 className="text-xl font-semibold text-gray-900">AI Analysis Results</h2>
+              </div>
+              <button
+                onClick={() => setShowAIAnalysis(false)}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+            <AICandidateRankings 
+              candidates={candidates} 
+              jobRequirements={jobRequirements}
+            />
+          </div>
+        ) : (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="text-center py-12">
+              <SparklesIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-2 text-lg font-medium text-gray-900">Ready to Analyze</h3>
+              <p className="mt-1 text-gray-500">
+                Click "Analyze with AI" to rank candidates based on current requirements
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -36,7 +36,7 @@ const FormGroup = ({
 			{Desc && (
 				<small
 					id={`${Id}-help`}
-					className='dark:text-gray-400 text-gray-500 text-xs'
+					className='dark:text-white-400 text-white-500 text-xs'
 				>
 					{Desc}
 				</small>

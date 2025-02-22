@@ -51,7 +51,7 @@ const NewExperienceForm = ({ experiences = [], onCreatePressed }) => {
     >
 
       <input       
-        className="dark:bg-zinc-800 form-control form-control-sm mb-2 border py-1 px-2 w-1/2 rounded-sm text-sm capitalize outline-none"
+        className="dark:bg-white-800 form-control form-control-sm mb-2 border py-1 px-2 w-1/2 rounded-sm text-sm capitalize outline-none"
         type="text"
         placeholder="Position"
         value={position}
@@ -62,7 +62,7 @@ const NewExperienceForm = ({ experiences = [], onCreatePressed }) => {
         onBlur={handleBlur}
       />
       <input
-        className="dark:bg-zinc-800 form-control form-control-sm mb-2 border py-1 px-2 w-1/2 rounded-sm text-sm capitalize outline-none"
+        className="dark:bg-white-800 form-control form-control-sm mb-2 border py-1 px-2 w-1/2 rounded-sm text-sm capitalize outline-none"
         type="text"
         placeholder="Company"
         value={company}
@@ -73,7 +73,7 @@ const NewExperienceForm = ({ experiences = [], onCreatePressed }) => {
         onBlur={handleBlur}
       />
       <textarea
-        className="dark:bg-zinc-800 w-4/5 form-control form-control-sm mb-2 border py-1 px-2 rounded-sm text-sm capitalize outline-none"
+        className="dark:bg-white-800 w-4/5 form-control form-control-sm mb-2 border py-1 px-2 rounded-sm text-sm capitalize outline-none"
         placeholder="Role description"
         rows="4"
         value={desc}
@@ -84,20 +84,20 @@ const NewExperienceForm = ({ experiences = [], onCreatePressed }) => {
         onBlur={handleBlur}
       />
       <div className="flex flex-col flex-wrap md:flex-row gap-2 md:items-center">
-        <div className="dark:bg-zinc-800 col p-1 text-sm flex items-center justify-center border w-40 rounded-sm">
+        <div className="dark:bg-white-800 col p-1 text-sm flex items-center justify-center border w-40 rounded-sm">
           <input
             type="date"
-            className="dark:bg-zinc-800 outline-none p-1"
+            className="dark:bg-white-800 outline-none p-1"
             placeholder="Start Date"
             onChange={(e) =>
               setStartDate(moment(e.target.value).format("MM YYYY"))
             }
           />
         </div>
-        <div className="dark:bg-zinc-800 col p-1 text-sm flex items-center justify-center border w-40 rounded-sm">
+        <div className="dark:bg-white-800 col p-1 text-sm flex items-center justify-center border w-40 rounded-sm">
           <input
             type="date"
-            className="dark:bg-zinc-800 outline-none p-1"
+            className="dark:bg-white-800 outline-none p-1"
             placeholder="End Date"
             onChange={(e) =>
               setEndDate(moment(e.target.value).format("MM YYYY"))
@@ -108,7 +108,7 @@ const NewExperienceForm = ({ experiences = [], onCreatePressed }) => {
         <div className="col">
           <div className="form-check border p-1 flex justify-center items-center w-24 rounded-sm">
             <input
-              className="dark:bg-zinc-800"
+              className="dark:bg-white-800"
               type="checkbox"
               value={presentJob}
               id="presentJob"
